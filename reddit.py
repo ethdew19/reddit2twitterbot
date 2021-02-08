@@ -31,7 +31,7 @@ def get_last_tweet():
 def get_top_post(subreddit):
     last_tweet = get_last_tweet()
     for submission in reddit.subreddit(subreddit).hot(limit=4):
-        if not submission.stickied and submission.url.endswith(('jpg', 'jpeg', 'png')) and submission.title + " #gaming " != last_tweet:
+        if not submission.stickied and submission.url.endswith(('jpg', 'jpeg', 'png')) and submission.title!= last_tweet:
             returnurl = submission.url
             returnmessage = submission.title
             return returnurl , returnmessage
