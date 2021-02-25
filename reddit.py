@@ -5,6 +5,7 @@ import re
 from os import environ
 from tweepy import *
 
+#Uses Environment Variables, you will need to get your own api keys
 access_token = environ.get('access_token')
 access_token_secret = environ.get('secret_access')
 consumer_key = environ.get('consumer_key')
@@ -22,12 +23,13 @@ user_agent = "Top Post Finder 1.0 by /u/xEquator"
 
 reddit = praw.Reddit(client_id=client_id, client_secret=secret, user_agent=user_agent)
 
+#Returns text from last post
 def get_last_tweet():
     timeline = api.user_timeline(tweet_mode ="extended")
     text = timeline[0].full_text
     cleantext = re.sub(r"http\S+", "", text)
     return cleantext
-
+#Searches through 4 top posts on given subbreddit, returns it if its an image and isnt stickied
 def get_top_post(subreddit):
     last_tweet = get_last_tweet()
     for submission in reddit.subreddit(subreddit).hot(limit=4):
@@ -37,7 +39,7 @@ def get_top_post(subreddit):
             return returnurl , returnmessage
 
 
-
+#Downloads the image and posts it to twitter
 def download_and_post(url,message):
     filename = 'temp.jpg'
     request = requests.get(url, stream=True)
@@ -50,7 +52,7 @@ def download_and_post(url,message):
         os.remove(filename)
     else:
         print("Unable to download image")
-
+#Runs the functions
 url,message = get_top_post('programmerhumor')
 download_and_post(url,message)
 
